@@ -1,0 +1,35 @@
+<Project>
+
+  <!-- Machine-specific overrides (gitignored). See README "Building". -->
+  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.props.user"
+          Condition="Exists('$(MSBuildThisFileDirectory)Directory.Build.props.user')" />
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+
+    <!-- KolonyTools goes in MKS/; the WOLF projects override this to WOLF/. Same layout as upstream. -->
+    <KSPBT_ModRoot>$(MSBuildThisFileDirectory)FOR_RELEASE/GameData/UmbraSpaceIndustries/MKS/</KSPBT_ModRoot>
+    <KSPBT_ModPluginFolder></KSPBT_ModPluginFolder>
+
+    <!-- CI installs dependencies with the setup-ckan and install-dependencies actions;
+         locally they are expected to be in KSPBT_GameRoot already. -->
+    <KSPBT_InstallCKANDependencies>false</KSPBT_InstallCKANDependencies>
+
+    <!-- Keep the assemblies as upstream builds them: no KSPAssembly attributes.
+         USITools has no KSPAssembly attribute, so a generated KSPAssemblyDependency
+         on it would make KSP refuse to load the MKS DLLs. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <KSPBT_GenerateAssemblyAttribute>false</KSPBT_GenerateAssemblyAttribute>
+    <KSPBT_GenerateDependencyAttributes>false</KSPBT_GenerateDependencyAttributes>
+
+    <!-- MKS.version is committed; the release workflow stamps its version and URLs. -->
+    <KSPBT_GenerateVersionFile>false</KSPBT_GenerateVersionFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="KSPBuildTools" Version="1.1.1" />
+  </ItemGroup>
+
+</Project>

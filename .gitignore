@@ -363,3 +363,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# MinmusMachineWorks fork: build output and local build settings
+*.pdb
+Directory.Build.props.user
