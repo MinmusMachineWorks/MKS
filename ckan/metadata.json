@@ -1,0 +1,85 @@
+{
+  "spec_version": "v1.4",
+  "identifier": "UKS-MM",
+  "name": "USI Kolonization Systems (MKS/OKS) (MMW)",
+  "abstract": "A series of interlocking modules for building long-term, self sustaining colonies in orbit and on other planets and moons, with community fixes.",
+  "description": "Minmus Machine Works fork of https://github.com/UmbraSpaceIndustries/MKS, based on gabes-ksp-fixes/MKS-Fixed (mhoram-kerbin's WOLF and editor fixes) plus a few more community fixes. It replaces the official UKS package (provides and conflicts with it), so mods that depend on UKS or MKS still install.",
+  "author": [
+    "RoverDude",
+    "Machine-Maker"
+  ],
+  "license": "restricted",
+  "release_status": "stable",
+  "ksp_version_min": "1.8",
+  "ksp_version_max": "1.12.99",
+  "resources": {
+    "homepage": "https://github.com/MinmusMachineWorks/MKS",
+    "repository": "https://github.com/MinmusMachineWorks/MKS",
+    "x_upstream": "https://github.com/UmbraSpaceIndustries/MKS"
+  },
+  "provides": [
+    "UKS",
+    "MKS"
+  ],
+  "conflicts": [
+    {
+      "name": "UKS"
+    },
+    {
+      "name": "MKS-Fixed"
+    },
+    {
+      "name": "SETI-CommunityTechTree"
+    }
+  ],
+  "depends": [
+    {
+      "name": "FirespitterCore",
+      "min_version": "v7.6.0"
+    },
+    {
+      "name": "ModuleManager",
+      "min_version": "2.8.0"
+    },
+    {
+      "name": "USITools",
+      "min_version": "0.9.0.0"
+    },
+    {
+      "name": "CommunityResourcePack",
+      "min_version": "0.7.0.0"
+    },
+    {
+      "name": "CommunityCategoryKit",
+      "min_version": "2.0.0.0"
+    },
+    {
+      "name": "USI-Core",
+      "min_version": "0.4.0.0"
+    },
+    {
+      "name": "Konstruction",
+      "min_version": "0.2.0.0"
+    }
+  ],
+  "install": [
+    {
+      "find": "UmbraSpaceIndustries/MKS",
+      "install_to": "GameData/UmbraSpaceIndustries"
+    },
+    {
+      "find": "UmbraSpaceIndustries/Karibou",
+      "install_to": "GameData/UmbraSpaceIndustries"
+    },
+    {
+      "find": "UmbraSpaceIndustries/WOLF",
+      "install_to": "GameData/UmbraSpaceIndustries"
+    }
+  ],
+  "suggests": [
+    {
+      "name": "USI-LS",
+      "min_version": "0.6.0.0"
+    }
+  ]
+}

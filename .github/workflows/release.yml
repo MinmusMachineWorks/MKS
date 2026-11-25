@@ -1,0 +1,66 @@
+name: Build & release
+
+# Every push and PR: compile the DLLs, package the mod and validate its .ckan
+# (dry run, uploaded as an artifact).
+# A v*.*.* tag: also create the GitHub release and publish the .ckan to KSP-Mods-CKAN.
+# Versions are upstream's plus a fourth number for our fixes, e.g. v112.0.1.1.
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*.*.*']
+  pull_request:
+
+jobs:
+  build:
+    # Pinned, not ubuntu-latest: CKAN's .deb needs mono-runtime (same image KSPBuildTools uses).
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # The compile action doesn't set up .NET itself.
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      # Fake KSP instance at /tmp/ksp (KSP_ROOT) with the mods the DLLs reference.
+      - uses: KSPModdingLibs/KSPBuildTools/.github/actions/setup-ckan@1.1.1
+      - uses: KSPModdingLibs/KSPBuildTools/.github/actions/install-dependencies@1.1.1
+        with:
+          dependency-identifiers: 'USITools=v112.0.1'
+
+      # Builds KolonyTools.dll into FOR_RELEASE/GameData/UmbraSpaceIndustries/MKS/ and
+      # USI_WOLF.dll and WOLFUI.dll into .../WOLF/ (see Directory.Build.props and the
+      # WOLF csproj files). WOLF.Tests.Unit is compiled but not packaged.
+      - uses: KSPModdingLibs/KSPBuildTools/.github/actions/compile@1.1.1
+        with:
+          solution-file-path: Source/MKS.sln
+
+      # Stage the DLLs under their GameData paths, so the release job can extract the
+      # artifact straight into FOR_RELEASE.
+      - name: Stage DLLs
+        run: |
+          OUT="$RUNNER_TEMP/build/GameData/UmbraSpaceIndustries"
+          mkdir -p "$OUT/MKS" "$OUT/WOLF"
+          SRC=FOR_RELEASE/GameData/UmbraSpaceIndustries
+          cp "$SRC/MKS/KolonyTools.dll" "$OUT/MKS/"
+          cp "$SRC/WOLF/USI_WOLF.dll" "$SRC/WOLF/WOLFUI.dll" "$OUT/WOLF/"
+          find "$RUNNER_TEMP/build" -type f
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mks-dlls
+          path: ${{ runner.temp }}/build
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    needs: build
+    permissions:
+      contents: write
+    uses: MinmusMachineWorks/KSP-Mods-CKAN/.github/workflows/release-mod.yml@main
+    with:
+      package-dir: FOR_RELEASE
+      build-artifact: mks-dlls
+      publish: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    secrets: inherit

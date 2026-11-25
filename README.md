@@ -1,3 +1,18 @@
+> **Minmus Machine Works fork.** This is a fork of [UmbraSpaceIndustries/MKS](https://github.com/UmbraSpaceIndustries/MKS),
+> based on [gabes-ksp-fixes/MKS-Fixed](https://github.com/gabes-ksp-fixes/MKS-Fixed) (mhoram-kerbin's WOLF
+> and editor fixes) plus a few more community fixes. Install it through CKAN as `UKS-MM`, after adding the
+> [Minmus Machine Works repository](https://github.com/MinmusMachineWorks/KSP-Mods-CKAN). It replaces the
+> official `UKS` package. Releases are built by `.github/workflows/release.yml` from
+> `v*.*.*` tags. CKAN metadata lives in `ckan/metadata.json`.
+>
+> **Building.** The projects use [KSPBuildTools](https://github.com/KSPModdingLibs/KSPBuildTools) and
+> build with `dotnet build Source/MKS.sln`. `KolonyTools.dll` lands in
+> `FOR_RELEASE/GameData/UmbraSpaceIndustries/MKS/`, and `USI_WOLF.dll` and `WOLFUI.dll` in `.../WOLF/`.
+> They aren't committed. KSPBuildTools finds a Steam KSP install by itself. It also needs USITools in
+> `GameData/000_USITools/` of that install. If your mods live elsewhere, create a gitignored
+> `Directory.Build.props.user` that sets `KSPBT_GameRoot` (the KSP folder with USITools installed) and,
+> if needed, `KSPBT_ManagedPath`.
+
 Modular Kolonization System (MKS) 
 ===
 
